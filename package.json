@@ -1,0 +1,32 @@
+{
+  "name": "stargate",
+  "private": false,
+  "version": "0.0.1",
+  "description": "A hyper-minimal EVE Online SSO gateway.",
+  "keywords": [
+    "eve",
+    "eveonline",
+    "esi",
+    "sso"
+  ],
+  "dependencies": {
+    "dotenv-safe": "^5.0.1",
+    "eve-sso-simple": "https://github.com/dougestey/eve-sso-simple",
+    "express": "^4.16.3",
+    "express-session": "^1.15.6"
+  },
+  "engines": {
+    "node": ">=8.0"
+  },
+  "scripts": {
+    "debug": "node debug app.js",
+    "start": "node app.js"
+  },
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/dougestey/stargate.git"
+  },
+  "author": "doug.estey@gmail.com",
+  "license": "MIT"
+}
