@@ -1,6 +1,7 @@
 require('dotenv-safe').config();
 
 const SSO = require('eve-sso-simple');
+const ESI = require('eve-swagger-simple');
 const express = require('express');
 const session = require('express-session');
 const cors = require('cors');
@@ -25,20 +26,27 @@ app.get('/token', (req, res) => {
   SSO.getTokens({
     client_id: process.env.EVE_CLIENT_ID,
     client_secret: process.env.EVE_SECRET_KEY,
-  }, req, res, (accessTokens, characterToken) => {
+  }, req, res, async(accessTokens, characterToken) => {
+    try {
+      req.session.resolved = await ESI.request(`/characters/${characterToken.CharacterID}`);
+    } catch(e) {
+      console.error(e);
+      return res.status(500).json(e);
+    }
+
     req.session.accessTokens = accessTokens;
     req.session.characterToken = characterToken;
-    req.session.authenticated = true;
+    req.session.resolved.character_id = characterToken.CharacterID;
 
     res.redirect(process.env.REDIRECT_URL);
   });
 });
 
-app.get('/whoami', (req, res) => {
-  if (!req.session || !req.session.characterToken)
+app.get('/whoami', async(req, res) => {
+  if (!req.session || !req.session.resolved)
     return res.status(401).json({ message: 'Access denied. '});
 
-  return res.status(200).json(req.session.characterToken);
+  return res.status(200).json(req.session.resolved);
 });
 
 app.listen(process.env.APP_PORT, () => console.log(`Stargate is now accepting connections at ${process.env.APP_URL}:${process.env.APP_PORT}`));
