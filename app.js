@@ -42,11 +42,18 @@ app.get('/token', (req, res) => {
   });
 });
 
-app.get('/whoami', async(req, res) => {
+app.get('/whoami', (req, res) => {
   if (!req.session || !req.session.resolved)
     return res.status(401).json({ message: 'Access denied. '});
 
   return res.status(200).json(req.session.resolved);
+});
+
+app.get('/logout', (req, res) => {
+  if (req.session)
+    req.session.destroy();
+
+  return res.send(401);
 });
 
 app.listen(process.env.APP_PORT, () => console.log(`Stargate is now accepting connections at ${process.env.APP_URL}:${process.env.APP_PORT}`));
