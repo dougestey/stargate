@@ -3,7 +3,10 @@ require('dotenv-safe').config();
 const SSO = require('eve-sso-simple');
 const express = require('express');
 const session = require('express-session');
+const cors = require('cors');
 const app = express();
+
+app.use(cors({ origin: process.env.ALLOWED_FQDN, credentials: true }));
 
 app.use(session({
   secret: process.env.APP_SESSION_SECRET,

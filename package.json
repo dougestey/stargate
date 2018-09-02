@@ -10,6 +10,7 @@
     "sso"
   ],
   "dependencies": {
+    "cors": "^2.8.4",
     "dotenv-safe": "^5.0.1",
     "eve-sso-simple": "https://github.com/dougestey/eve-sso-simple",
     "express": "^4.16.3",
