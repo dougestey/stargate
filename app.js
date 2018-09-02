@@ -38,7 +38,7 @@ app.get('/whoami', (req, res) => {
   if (!req.session || !req.session.characterToken)
     return res.status(401).json({ message: 'Access denied. '});
 
-  return res.status(200).json(characterToken);
+  return res.status(200).json(req.session.characterToken);
 });
 
 app.listen(process.env.APP_PORT, () => console.log(`Stargate is now accepting connections at ${process.env.APP_URL}:${process.env.APP_PORT}`));
